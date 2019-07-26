@@ -9,3 +9,9 @@
     position: absolute;
     margin-left: 45%;
 }
+
+#loginButton {
+    background-color: black;
+    color: white;
+    align-items: center;
+}
