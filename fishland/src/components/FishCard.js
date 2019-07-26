@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
+import { Card, Image, Button } from 'semantic-ui-react';
 
 class FishCard extends Component {
 
+    handleFishClick = (fish) => {
+        this.props.handleClick(fish)
+        this.props.history.push('/fish')
+    }
+
     render() {
         return (
-            <Card>
-                <Image src={require('../images/Bluegill.png')} wrapped ui={false} />
+            <Card onClick={() => this.handleFishClick(this.props.fishy)}>
+                <Image src={require('../images/' + this.props.fishy.name + '.png')} wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>Fish1</Card.Header>
-                    <Card.Description>
-                        Fishermen Love this Application
+                    <Card.Header>{this.props.fishy.name}</Card.Header>
+                    <Card.Description >
+                        {this.props.fishy.information.slice(0, 140) + '...'}
+                        <br></br>
+                        <div className='ui button'>
+                            <Button basic color='green'>
+                                Add to Favorites
+                        </Button>
+                        </div>
                     </Card.Description>
                 </Card.Content>
             </Card>
@@ -18,4 +30,4 @@ class FishCard extends Component {
     }
 }
 
-export default FishCard;
+export default withRouter(FishCard);

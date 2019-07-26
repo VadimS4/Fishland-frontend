@@ -20,28 +20,28 @@ class Login extends Component {
                                         <div className="field">
                                             <label>Name: </label>
                                             <div className="ui fluid icon input">
-                                                <input name="user_name" type="text" id="user_name" />
+                                                <input name="user_name" type="text" />
                                                 <i className="icon id badge"></i>
                                             </div>
                                         </div>
                                         <div className="field">
                                             <label>Username:</label>
                                             <div className="ui fluid icon input">
-                                                <input name="username" type="text" id="username" />
+                                                <input name="username" type="text" />
                                                 <i className="icon id card"></i>
                                             </div>
                                         </div>
                                         <div className="field">
                                             <label>Password:</label>
                                             <div className="ui fluid icon input">
-                                                <input name="user_password" type="password" id="user_password" />
+                                                <input name="user_password" type="password" />
                                                 <i className="icon key"></i>
                                             </div>
                                         </div>
                                         <div className="field">
                                             <label>Confirm Password:</label>
                                             <div className="ui fluid icon input">
-                                                <input name="confirm_user_password" type="password" id="user_password" />
+                                                <input name="confirm_user_password" type="password" />
                                                 <i className="icon key"></i>
                                             </div>
                                         </div>
