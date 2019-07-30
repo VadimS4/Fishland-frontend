@@ -5,8 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
 
-    handleLogIn = (event) => {
-        event.preventDefault()
+    handleLogIn = () => {
         this.props.history.push('/login')
     }
 
@@ -23,8 +22,21 @@ class Navbar extends Component {
         this.props.history.push('/')
     }
 
+    logged_in = () => {
+        if (!this.props.user) {
+            return (
+                <h4>Please Log In</h4>
+            )
+        } else {
+            return (
+                <h4>Welcome, {this.props.user.name}!</h4>
+            )
+        }
+    }
+
 
     render(){
+
         return (
             <div className='navbar'>
                 <Menu attached="top">
@@ -50,6 +62,11 @@ class Navbar extends Component {
                     <Menu.Menu >
                         <div className='title'>
                             <h1>FishLand</h1>
+                        </div>
+                    </Menu.Menu>
+                    <Menu.Menu >
+                        <div className='profile'>
+                            {this.logged_in()}
                         </div>
                     </Menu.Menu>
                 </Menu>

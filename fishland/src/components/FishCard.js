@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Card, Image, Button } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 class FishCard extends Component {
 
@@ -18,11 +18,6 @@ class FishCard extends Component {
                     <Card.Description >
                         {this.props.fishy.information.slice(0, 140) + '...'}
                         <br></br>
-                        <div className='ui button'>
-                            <Button basic color='green'>
-                                Add to Favorites
-                        </Button>
-                        </div>
                     </Card.Description>
                 </Card.Content>
             </Card>

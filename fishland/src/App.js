@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar'
 import Fish from './containers/Fish';
 import Login from './components/Login';
@@ -15,8 +15,10 @@ class App extends Component {
     super()
     this.state = {
       fishes: [],
-      currentFish: []
+      currentFish: null,
+      user: null
     }
+    this.getProfile()
   }
 
   componentDidMount = () => {
@@ -28,57 +30,27 @@ class App extends Component {
   }
 
   getProfile = () => {
-    let token = localStorage.getItem('jwt')
-    fetch('http://localhost:3000/api/v1/profile', {
-      headers: {'Authorization': 'Bearer ' + token}
-    })
-    .then(resp => resp.json())
-    .then(json => {
-      console.log('Profile:', json)
-      this.setState({ user: json.user })
-    })
+    let token = this.getToken()
+    console.log("token", token)
+    if (token) {
+      fetch('http://localhost:3000/api/v1/profile', {
+        headers: {'Authorization': 'Bearer ' + token}
+      })
+      .then(resp => resp.json())
+      .then(json => {
+        console.log('Profile:', json.user)
+        this.setState({ user: json.user })
+      })
+    }
   }
-
-  // getSignUp = (event, person) => {
-  //   event.preventDefault()
-  //   console.log(person)
-
-  //   let username = person.username
-  //   let password = person.password
-    
-  //   if (person.confirm_password === person.password) {
-  //     password = person.password
-  //   } else {
-  //     console.log("Passwords Dont Match")
-  //   }
-
-  //   fetch('http://localhost:3000/api/v1/new', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({ user: { username, password }})
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(json => {
-  //     console.log('login:', json)
-  //     if (json&& json.jwt) {
-  //       this.saveToken(json.jwt)
-  //       this.setState({ user: { username }})
-  //     }
-  //   })
-  //   .then(() => {
-  //     this.getProfile()
-  //   })
-  // }
 
   logout = () => {
     this.clearToken()
     this.setState({ user: '' })
-    console.log('Logged Out:')
+    console.log('Logged Out')
   }
 
-  getToken(jwt) {
+  getToken() {
     return localStorage.getItem('jwt')
   }
 
@@ -91,23 +63,55 @@ class App extends Component {
   }
 
   handleClick = (fish) => {
-    this.setState({
-      selectedFish: fish
+    let fish_id = fish.id.toString()
+    console.log(fish_id)
+    fetch('http://localhost:3000/api/v1/fish/' + fish_id)
+    .then(resp => resp.json())
+    .then(json => {
+      this.setState({ currentFish: json}, () => console.log(this.state.currentFish))
     })
+  }
+
+  addToFavorites = (fish) => {
+    let fish_id = fish.id
+    let user_id = this.state.user.id
+    fetch('http://localhost:3000/api/v1/newfav', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id, fish_id})
+    })
+    .then(resp => resp.json())
+    .then(json => () => console.log(json))
+    .catch(err => console.log(err))
+  }
+
+  removeFromFavorites = (fish) => {
+    let fish_id = fish.id
+    let user_id = this.state.user.id
+    fetch('http://localhost:3000/api/v1/unfav', {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ user_id, fish_id})
+    })
+    .then(resp => resp.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err))
   }
 
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Navbar onLogout={this.logout} />
-          <Route exact path="/" render={(props) => <Fish {...props} fishes={this.state.fishes} handleClick={this.handleClick} /> } />
-          <Route path="/login" render={(props) => <Login {...props} onLogin={this.getProfile} onLogout={this.logout} /> } />
-          <Route path="/signup" render={(props) => <Signup {...props} onSignUp={this.getSignUp} /> } />
-          <Route path="/favorites" render={(props) => <Favorites {...props} user={this.state.user} handleClick={this.handleClick} /> } />
-          <Route path="/fish" render={() => <FishInfo selectedFish={this.state.selectedFish}/> } />
-        </div>
-      </Router>
+      <BrowserRouter>
+        <Switch>
+          <div>
+            <Navbar user={this.state.user} onLogout={this.logout} />
+            <Route exact path="/" render={(props) => <Fish {...props} fishes={this.state.fishes} handleClick={this.handleClick} addToFavorites={this.addToFavorites} />} />
+            <Route path="/login" render={(props) => <Login {...props} getProfile={this.getProfile} onLogout={this.logout} saveToken={this.saveToken} getToken={this.getToken} />} />
+            <Route path="/signup" render={(props) => <Signup {...props} onSignUp={this.getSignUp} saveToken={this.saveToken} getProfile={this.getProfile} />} />
+            <Route path="/favorites" render={(props) => <Favorites {...props} user={this.state.user} handleClick={this.handleClick} />} />
+            <Route path="/fish" render={() => <FishInfo selectedFish={this.state.currentFish} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites} user={this.state.user} />} />
+          </div>
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
