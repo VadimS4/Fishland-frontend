@@ -1,7 +1,11 @@
+#fishImage {
+    background-color: beige;
+}
+
 #favoriteButton {
     width: 40%;
     height: 100%;
-    background-color: grey;
+    background-color: lightseagreen;
     color: white;
     margin-left: -2%;
 }
@@ -12,4 +16,12 @@
 
 #fishTips {
     text-align: left;
+}
+
+#fishInfo1 {
+    background-color: lightcyan;
+}
+
+#fishInfo2 {
+    background-color: lightyellow;
 }

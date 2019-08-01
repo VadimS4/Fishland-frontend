@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import FishCard from './FishCard';
@@ -54,4 +55,10 @@ class Favorites extends Component {
     }
 }
 
-export default withRouter(Favorites)
+const mapStateToProps = state => {
+    return {
+        user: state.appReducer.user
+    }
+}
+
+export default withRouter(connect(mapStateToProps)(Favorites));

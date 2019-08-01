@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'; 
 import { Form } from 'semantic-ui-react';
 import '../styling/Signup.css';
+import { getUserProfile } from '../actions/appActions';
 
 class Signup extends Component {
 
@@ -44,7 +46,7 @@ class Signup extends Component {
                 }
             })
             .then(() => {
-                this.props.getProfile()
+                this.props.getUser()
                 this.props.history.push('/')
             })
     }
@@ -117,4 +119,10 @@ class Signup extends Component {
     }
 }
 
-export default withRouter(Signup);
+const mapDispatchToProps = dispatch => {
+    return {
+        getUser: () => {( getUserProfile(dispatch))}
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Signup));

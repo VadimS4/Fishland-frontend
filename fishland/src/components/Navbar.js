@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Dropdown, Icon, Menu } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import '../styling/Navbar.css'
 import { withRouter } from 'react-router-dom';
+import { logUserOut } from '../actions/appActions';
 
 class Navbar extends Component {
 
@@ -10,7 +12,8 @@ class Navbar extends Component {
     }
 
     handleLogOut = (event) => {
-        this.props.onLogout(event)
+        event.preventDefault()
+        this.props.logoutUser()
         this.props.history.push('/login')
     }
 
@@ -75,4 +78,16 @@ class Navbar extends Component {
     }
 }
 
-export default withRouter(Navbar);
+const mapStateToProps = state => {
+    return {
+        user: state.appReducer.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logoutUser: () => {(logUserOut(dispatch))}
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

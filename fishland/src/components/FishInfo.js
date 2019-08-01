@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Segment, Image } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import '../styling/FishInfo.css'
@@ -7,7 +8,7 @@ class FishInfo extends Component {
 
     removeFavorite = (fish) => {
         this.props.removeFromFavorites(fish)
-        this.props.history.push("/favorites")
+        this.props.history.push("/")
     }
 
     addFavorite = (fish) => {
@@ -35,7 +36,7 @@ class FishInfo extends Component {
         if (favoritesList.some(favorite => favorite.id === ourFish.id)) {
             return (
                 <button className="ui button" type="button" id="favoriteButton" onClick={() => this.removeFavorite(this.props)}>
-                    Remove From Favorite
+                    Remove From Favorites
                 </button>
             )
         } else {
@@ -69,7 +70,7 @@ class FishInfo extends Component {
             <div className="fish">
                 {item === null ? null :
                     <React.Fragment>
-                        <Segment>
+                        <Segment id="fishImage">
                             <Image src={require('../images/' + item.name + '.png')} size='massive' centered />
                                 {this.filterButton()}
                         </Segment>
@@ -78,13 +79,13 @@ class FishInfo extends Component {
                                 <div className="column" id="fishInfo1">
                                     <Segment id="fishInformation" raised>
                                         <h3 className="ui header"> {item.name} Information</h3>
-                                        <p>{item.information}</p>
+                                        <p>{item.information.split()}</p>
                                     </Segment>
                                     <Segment id="fishFacts" raised>
                                         <h3 className="ui header">{item.name} Facts</h3>
                                         <ul>
-                                            {item.facts.split(".").map(oneItem => {
-                                                return (<li>{oneItem}</li>);
+                                            {item.facts.split(".").slice(0, -1).map(oneItem => {
+                                                return (<li>{oneItem + "."}</li>);
                                             })}
                                         </ul>
                                     </Segment>
@@ -101,8 +102,8 @@ class FishInfo extends Component {
                                     <Segment id="fishTips" raised>
                                         <h3 className="ui header">{item.name} Fishing Tips and Tricks</h3>
                                         <ul>
-                                            {item.tips.split(".").map(thisItem => {
-                                                return (<li>{thisItem}</li>)
+                                            {item.tips.split(".").slice(0, -1).map(thisItem => {
+                                                return (<li>{thisItem + "."}</li>)
                                             })}
                                         </ul>
                                     </Segment>
@@ -117,4 +118,10 @@ class FishInfo extends Component {
     }
 }
 
-export default withRouter(FishInfo);
+const mapStateToProps = state => {
+    return {
+        user: state.appReducer.user
+    }
+}
+
+export default withRouter(connect(mapStateToProps)(FishInfo));

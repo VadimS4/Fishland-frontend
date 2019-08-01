@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { fetchFish, getUserProfile, logUserOut } from './actions/appActions';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar'
 import Fish from './containers/Fish';
@@ -14,39 +15,36 @@ class App extends Component {
   constructor(){
     super()
     this.state = {
-      fishes: [],
+      // fishes: [],
       currentFish: null,
-      user: null
+      // user: null
     }
-    this.getProfile()
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/api/v1/fish")
-    .then(resp => resp.json())
-    .then(json => {
-      this.setState({ fishes: json }, () => console.log(this.state.fishes))
-    })
+    this.props.getFish()
+    this.props.getUser()
+    // fetch("http://localhost:3000/api/v1/fish")
+    // .then(resp => resp.json())
+    // .then(json => {
+    //   this.setState({ fishes: json }, () => console.log(this.state.fishes))
+    // })
   }
 
   getProfile = () => {
-    let token = this.getToken()
-    console.log("token", token)
-    if (token) {
-      fetch('http://localhost:3000/api/v1/profile', {
-        headers: {'Authorization': 'Bearer ' + token}
-      })
-      .then(resp => resp.json())
-      .then(json => {
-        console.log('Profile:', json.user)
-        this.setState({ user: json.user })
-      })
-    }
+    this.props.getUser()
+      // fetch('http://localhost:3000/api/v1/profile', {
+      //   headers: {'Authorization': 'Bearer ' + token}
+      // })
+      // .then(resp => resp.json())
+      // .then(json => {
+      //   console.log('Profile:', json.user)
+      //   this.setState({ user: json.user })
+      // })
   }
 
   logout = () => {
-    this.clearToken()
-    this.setState({ user: '' })
+    this.props.logoutUser()
     console.log('Logged Out')
   }
 
@@ -56,10 +54,6 @@ class App extends Component {
 
   saveToken(jwt) {
     localStorage.setItem('jwt', jwt)
-  }
-
-  clearToken() {
-    localStorage.setItem('jwt', '')
   }
 
   handleClick = (fish) => {
@@ -74,16 +68,14 @@ class App extends Component {
 
   addToFavorites = (fish) => {
     let fish_id = fish.selectedFish.id
-    let user_id = this.state.user.id
+    let user_id = this.props.user.id
 
     fetch('http://localhost:3000/api/v1/newfav', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ favorite: {user_id, fish_id} })
     })
-    .then(resp => resp.json())
-    .then(json => console.log(json))
-    .then(() => this.getProfile())
+    .then(() => this.props.getUser())
     .catch(err => console.log(err))
   }
 
@@ -92,7 +84,7 @@ class App extends Component {
     let favorite_id = null
     let token = this.getToken()
 
-    this.state.user.favorites.forEach(favorite => {
+    this.props.user.favorites.forEach(favorite => {
       if (favorite.fish_id === fish_id) {
         favorite_id = favorite.id
       }
@@ -103,8 +95,7 @@ class App extends Component {
       headers: { 'Authorization': 'Bearer ' + token}
     })
     .then(resp => resp.json())
-    .then(json => console.log(json))
-    .then(() => this.getProfile())
+    .then(() => this.props.getUser())
     .catch(err => console.log(err))
   }
 
@@ -113,12 +104,12 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <div className="app">
-            <Navbar user={this.state.user} onLogout={this.logout} />
-            <Route exact path="/" render={(props) => <Fish {...props} fishes={this.state.fishes} handleClick={this.handleClick} addToFavorites={this.addToFavorites} />} />
-            <Route path="/login" render={(props) => <Login {...props} user={this.state.user} getProfile={this.getProfile} onLogout={this.logout} saveToken={this.saveToken} getToken={this.getToken} />} />
-            <Route path="/signup" render={(props) => <Signup {...props} onSignUp={this.getSignUp} saveToken={this.saveToken} getProfile={this.getProfile} />} />
-            <Route path="/favorites" render={(props) => <Favorites {...props} user={this.state.user} handleClick={this.handleClick} />} />
-            <Route path="/fish" render={() => <FishInfo selectedFish={this.state.currentFish} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites} user={this.state.user} />} />
+            <Navbar />
+            <Route exact path="/" render={(props) => <Fish {...props} handleClick={this.handleClick} addToFavorites={this.addToFavorites} />} />
+            <Route path="/login" render={(props) => <Login {...props} saveToken={this.saveToken} getToken={this.getToken} />} />
+            <Route path="/signup" render={(props) => <Signup {...props} onSignUp={this.getSignUp} saveToken={this.saveToken} />} />
+            <Route path="/favorites" render={(props) => <Favorites {...props} handleClick={this.handleClick} />} />
+            <Route path="/fish" render={() => <FishInfo selectedFish={this.state.currentFish} addToFavorites={this.addToFavorites} removeFromFavorites={this.removeFromFavorites} />} />
           </div>
         </Switch>
       </BrowserRouter>
@@ -126,4 +117,19 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    fishes: state.appReducer.fishes,
+    user: state.appReducer.user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getFish: () => {(fetchFish(dispatch))},
+    getUser: () => {(getUserProfile(dispatch))},
+    logoutUser: () => {(logUserOut(dispatch))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
