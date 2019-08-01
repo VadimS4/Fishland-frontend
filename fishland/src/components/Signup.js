@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Form } from 'semantic-ui-react';
 import '../styling/Signup.css';
 
-class Login extends Component {
+class Signup extends Component {
 
     constructor(){
         super()
@@ -11,7 +11,6 @@ class Login extends Component {
             name: '',
             username: '',
             password: '',
-            // confirm_password: ''
         }
     }
 
@@ -53,17 +52,20 @@ class Login extends Component {
     render() {
         return (
             <div className="signup">
-                <div className="ui  container">
+                <div className="signup_img">
+                    <img src="http://realestate.boucvaltinvestments.com/wp-content/uploads/fishing-background.jpg" alt="lurepic" />
+                </div>
+                <div className="ui  container" id="signupbox">
                     <div className="ui grid center aligned">
                         <div className="row">
                             <div className="sixteen wide tablet six wide computer column catcpa">
-                                <div className="ui left aligned segment" id="signupbox">
+                                <div className="ui left aligned segment">
                                     <form className="ui form" onSubmit={this.getSignUp}>
                                         <h1 className="ui header center aligned loginbox">
                                             <img src="https://static.thenounproject.com/png/969891-200.png" alt="login" className="ui small image" />
                                             <div className="content">
-                                                FishLand
-                                        </div>
+                                                Sign Up Here
+                                            </div>
                                         </h1>
                                         <div className="field">
                                             <label>Name: </label>
@@ -115,4 +117,4 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login);
+export default withRouter(Signup);

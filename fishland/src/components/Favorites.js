@@ -34,19 +34,22 @@ class Favorites extends Component {
             )
         } else {
             return (
-                this.props.user.fish.map(fishy => (
-                    <FishCard key={fishy.id} fishy={fishy} handleClick={this.props.handleClick} />
-            )))
+                <div className="favorites">
+                    <Card.Group itemsPerRow={3}>
+                        {this.props.user.fish.map(fishy => (
+                            <FishCard key={fishy.id} fishy={fishy} handleClick={this.props.handleClick} /> ))}
+                    </Card.Group>
+                </div>
+            )
         }
     }
 
     render() {
+        console.log("render fires")
         return (
-            <div className='favorites'>
-                <Card.Group itemsPerRow={3}>
-                    {this.errorHandler()}
-                </Card.Group>
-            </div> 
+            <div>
+                {this.errorHandler()}
+            </div>
         )
     }
 }

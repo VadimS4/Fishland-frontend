@@ -1,0 +1,8 @@
+.fishimg {
+    height: 27em;
+}
+
+.fishimg img {
+    width: 100%;
+    height: auto;
+}

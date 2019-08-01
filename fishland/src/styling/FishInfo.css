@@ -3,4 +3,13 @@
     height: 100%;
     background-color: grey;
     color: white;
+    margin-left: -2%;
+}
+
+#fishFacts {
+    text-align: left;
+}
+
+#fishTips {
+    text-align: left;
 }
