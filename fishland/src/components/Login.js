@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getUserProfile } from '../actions/appActions'
 import { withRouter } from 'react-router-dom';
 import '../styling/Login.css'
 import { Form, Message, Icon } from 'semantic-ui-react';
@@ -30,7 +32,7 @@ class Login extends Component {
                 console.log('Login:', json)
                 if (json && json.jwt) {
                     this.props.saveToken(json.jwt)
-                    this.props.getProfile()
+                    this.props.getUser()
                     this.props.history.push('/')
                 } else {
                     alert("Incorrect Username or Password")
@@ -124,4 +126,16 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login);
+const mapStateToProps = state => {
+    return {
+        user: state.appReducer.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getUser: () => { (getUserProfile(dispatch)) }
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

@@ -12,7 +12,7 @@ class FishCard extends Component {
 
     render() {
         return (
-            <Card onClick={() => this.handleFishClick(this.props.fishy)}>
+            <Card onClick={() => this.handleFishClick(this.props.fishy)} >
                 <Image className="fishimg" src={require('../images/' + this.props.fishy.name + '.png')} wrapped ui={false} />
                 <Card.Content>
                     <Card.Header>{this.props.fishy.name}</Card.Header>
