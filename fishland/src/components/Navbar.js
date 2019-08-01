@@ -39,9 +39,9 @@ class Navbar extends Component {
 
         return (
             <div className='navbar'>
-                <Menu attached="top">
-                    <Dropdown item icon="bars" simple>
-                        <Dropdown.Menu>
+                <Menu attached="top" className="mynav">
+                    <Dropdown item icon="bars" className="sandwitchmenu" simple>
+                        <Dropdown.Menu className="dropdown">
                             <Dropdown.Item>
                                 <Icon name='dropdown' />
                                 <span className="text">Open</span>
