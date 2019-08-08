@@ -1,29 +1,22 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## FishLand Application 
 
-## Available Scripts
+FishLand is an application built for an audience with an interest in the sport of fishing, or just learning new things about fish. Built with the flexibility of creating an account to add favorites, you can log in at any time and have access to fish that you have saved.
 
-In the project directory, you can run:
+### `To Install`
 
-### `npm start`
+1. Fork and Clone the Repository.
+2. In the terminal, run `npm install` and `npm start`.
+3. Navigate to the link opened by `npm start` and start using the website.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `Technologies`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+FishLand was built using a
 
-### `npm test`
+* Ruby on Rails backend.
+* Javascript Frontend
+* React and Redux Javascript Frameworks
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### ``
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
