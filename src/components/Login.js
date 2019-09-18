@@ -22,7 +22,7 @@ class Login extends Component {
         let username = this.state.username
         let password = this.state.password
 
-        fetch('http://localhost:3000/api/v1/login', {
+        fetch('https://fishland-backend.herokuapp.com/api/v1/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ user:{ username, password } })
