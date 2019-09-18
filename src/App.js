@@ -59,7 +59,7 @@ class App extends Component {
   handleClick = (fish) => {
     let fish_id = fish.id.toString()
     console.log(fish_id)
-    fetch('http://localhost:3000/api/v1/fish/' + fish_id)
+    fetch('https://fishland-backend.herokuapp.com/api/v1/fish/' + fish_id)
     .then(resp => resp.json())
     .then(json => {
       this.setState({ currentFish: json}, () => console.log(this.state.currentFish))
@@ -70,7 +70,7 @@ class App extends Component {
     let fish_id = fish.selectedFish.id
     let user_id = this.props.user.id
 
-    fetch('http://localhost:3000/api/v1/newfav', {
+    fetch('https://fishland-backend.herokuapp.com/api/v1/newfav', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ favorite: {user_id, fish_id} })
@@ -90,7 +90,7 @@ class App extends Component {
       }
     })
 
-    fetch(`http://localhost:3000/api/v1/unfav/${favorite_id}`, {
+    fetch(`https://fishland-backend.herokuapp.com/api/v1/unfav/${favorite_id}`, {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + token}
     })
