@@ -13,7 +13,7 @@ export const fetchFish = (dispatch) => {
 export const getUserProfile = (dispatch) => {
     let token = localStorage.getItem('jwt')
     if (token) {
-        fetch('https://hidden-citadel-98898.herokuapp.com/api/v1/profile', {
+        fetch('https://fishland-backend.herokuapp.com/api/v1/profile', {
             headers: {'Authorization': 'Bearer ' + token}
         })
         .then(resp => resp.json())
